@@ -40,22 +40,73 @@
 # print(f'tag_picture_parent_previous_sibling:\n {tag_picture_parent_previous_sibling}')
 # print(tag_picture_parent_previous_sibling.get_text())
 
+# ///////////////////////////////////////////////
+# from requests import get # попробуем другой модуль. get позволяет задавать заголовки, чтобы обойти анти-раулинговую защиту
+# import requests
+# //////////////////////////////////////////////
+
+# from urllib.request import urlopen
+# from bs4 import BeautifulSoup
+# import re
+
 HEADERS_SBER_BANK = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
 }
 
+
+# html = urlopen('http://www.pythonscraping.com/pages/page3.html')
+# bs = BeautifulSoup(html, 'html.parser')
+
+# re_exp_txt = '\.\.\/img\/gifts/img.*\.jpg'
+# re_exp_txt = '..\/img\/gifts/img.*.jpg'
+# re_exp_obj = re.compile(re_exp_txt)
+# images = bs.find_all('img', {'src': re_exp_obj})
+# for image in images: 
+#     a = image.attrs
+#     print(image['src'])
+
+
+# html = urlopen('http://en.wikipedia.org/wiki/Kevin_Bacon')
+# bs = BeautifulSoup(html, 'html.parser')
+# for link in bs.find_all('a'):
+#     if 'href' in link.attrs:
+#         print(link.attrs['href'])
+
+
+# html = urlopen('http://en.wikipedia.org/wiki/Kevin_Bacon')
+# bs = BeautifulSoup(html, 'html.parser')
+# for link in bs.find('div', {'id':'bodyContent'}).find_all(
+#     'a', href=re.compile('^(/wiki/)((?!:).)*$')):
+#     if 'href' in link.attrs:
+#         print(link.attrs['href'])
+
+
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import datetime
+import random
 import re
+import requests
 
-html = urlopen('http://www.pythonscraping.com/pages/page3.html')
-bs = BeautifulSoup(html, 'html.parser')
 
-re_exp_txt = '\.\.\/img\/gifts/img.*\.jpg'
-re_exp_txt = '..\/img\/gifts/img.*.jpg'
-re_exp_obj = re.compile(re_exp_txt)
-images = bs.find_all('img', {'src': re_exp_obj})
-for image in images: 
-    a = image.attrs
-    print(image['src'])
+random.seed(datetime.datetime.now())
+
+HEADERS_WIKI = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36',
+}
+
+
+def getLinks(articleUrl):
+    # html = urlopen('http://en.wikipedia.org{}'.format(articleUrl))
+    us_url = 'http://en.wikipedia.org{}'.format(articleUrl)
+    html = requests.get(us_url, headers=HEADERS_WIKI)
+    bs = BeautifulSoup(html.text, 'html.parser')
+    return bs.find('div', {'id':'bodyContent'}).find_all('a', href=re.compile('^(/wiki/)((?!:).)*$'))
+
+links = getLinks('/wiki/Kevin_Bacon')
+while len(links) > 0:
+    newArticle = links[random.randint(0, len(links)-1)].attrs['href']
+    print(newArticle)
+    links = getLinks(newArticle)
