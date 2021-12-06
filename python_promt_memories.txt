@@ -6,7 +6,8 @@ venv\Scripts\Deactivate
 .\venv\scripts\activate
 
 python manage.py shell  - Запуск интерактивоной оболочки в виртуальном окружении
-
+-----------------------------------------------------------------
+pip install beautifulsoup4
 -----------------------------------------------------------------
 Включение политики безопасности запуска скриптов PowerShell:
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
