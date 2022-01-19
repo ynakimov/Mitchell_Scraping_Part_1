@@ -7,20 +7,16 @@ venv\Scripts\Deactivate
 
 python manage.py shell  - Запуск интерактивоной оболочки в виртуальном окружении
 -----------------------------------------------------------------
-pip install beautifulsoup4
------------------------------------------------------------------
 Включение политики безопасности запуска скриптов PowerShell:
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 *****************************************************************
 
-git commit -am "Установка DEBUG = FALSE on environment variables"
-git push heroku master
-
 git add .   -  приказывает Git начать 
-               отслеживание измененийgit новых файлов, добавленных в проекта
+               отслеживание изменений новых файлов, добавленных в проекта
 
 *****************************************************************
 
 pip freeze > requirements.txt
 *****************************************************************
+scrapy runspider C:\Python_Projects\Mitchell_Scraping\Part_1\wikiSpider\wikiSpider\articleMoreRules.py
